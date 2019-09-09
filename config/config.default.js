@@ -1,7 +1,7 @@
 'use strict';
 
 exports.passportGithub = {
-  key: '',
-  secret: '',
+  key: 'xxx',
+  secret: 'yyy',
   callbackURL: '/passport/github/callback',
 };

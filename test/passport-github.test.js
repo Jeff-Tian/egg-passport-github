@@ -2,6 +2,7 @@
 
 const request = require('supertest');
 const mm = require('egg-mock');
+const assert = require('assert');
 
 describe('test/passport-github.test.js', () => {
   let app;
@@ -34,5 +35,29 @@ describe('test/passport-github.test.js', () => {
       .get('/passport/github/callback')
       .expect('Location', /^https:\/\/github.com\/login\/oauth\/authorize\?response_type=code&redirect_uri=http/)
       .expect(302);
+  });
+});
+
+describe('callback', () => {
+  let app;
+  before(() => {
+    app = mm.app({
+      baseDir: 'apps/passport-github-test',
+    });
+    return app.ready();
+  });
+
+  after(() => app.close());
+  afterEach(mm.restore);
+
+  it('should authenticated', () => {
+    const ctx = app.mockContext({});
+
+    app
+      .httpRequest()
+      .get('/passport/citi/callback?code=1234')
+      .expect(302);
+
+    assert(ctx.isAuthenticated());
   });
 });
