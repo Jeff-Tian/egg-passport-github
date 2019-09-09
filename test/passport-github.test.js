@@ -55,8 +55,9 @@ describe('callback', () => {
 
     app
       .httpRequest()
-      .get('/passport/citi/callback?code=1234')
-      .expect(302);
+      .get('/passport/github/callback?code=1234')
+      .expect(302)
+      .expect('Location', /^https:\/\/github.com\/login\/oauth\/authorize\?response_type=code&redirect_uri=http/);
 
     assert(ctx.isAuthenticated());
   });
